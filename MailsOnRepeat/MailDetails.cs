@@ -13,6 +13,7 @@ namespace MailsOnRepeat
         public String? Password { get; set; }
         public String? Subject { get; set; }
         public String? Body { get; set; }
+        public short MailCount { get; set; }
         public IEnumerable<String> Recipients { get; set; }
     }
 }

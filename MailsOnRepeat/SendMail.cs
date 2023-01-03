@@ -27,8 +27,14 @@ namespace MailsOnRepeat
                 {
                     smtpClient.Connect("smtp.gmail.com", 465, true);
                     smtpClient.Authenticate(mailDetails.FromAddress, mailDetails.Password);
-                    smtpClient.Send(mailMessage, new MailboxAddress(mailDetails.FromName, mailDetails.FromAddress),
-                        mailDetails.Recipients.Select(x => new MailboxAddress(x, x)));
+                    
+                    for (int i = 0; i < mailDetails.MailCount; i++)
+                    {
+                        smtpClient.Send(mailMessage, new MailboxAddress(mailDetails.FromName, mailDetails.FromAddress),
+                            mailDetails.Recipients.Select(x => MailboxAddress.Parse(x)));
+                        Console.WriteLine($"Mail {i + 1} sent");
+                    }
+                    
                     smtpClient.Disconnect(true);
                     return true;
                 }
