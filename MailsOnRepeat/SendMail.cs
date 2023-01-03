@@ -10,26 +10,34 @@ namespace MailsOnRepeat
 {
     internal static class SendMail
     {
-        public static bool Send()
+        public static bool Send(MailDetails mailDetails)
         {
             var mailMessage = new MimeMessage();
-            mailMessage.From.Add(new MailboxAddress("from name", "from email"));
-            mailMessage.To.Add(new MailboxAddress("to name", "to email"));
-            mailMessage.Subject = "subject";
-            mailMessage.Body = new TextPart("plain")
+            //mailMessage.From.Add(new MailboxAddress("from name", "from email"));
+            //mailMessage.To.Add(new MailboxAddress("","to email"));
+            mailMessage.Subject = mailDetails.Subject;
+            mailMessage.Body = new TextPart("html")
             {
-                Text = "Hello"
+                Text = mailDetails.Body
             };
 
-            using (var smtpClient = new SmtpClient())
+            try
             {
-                smtpClient.Connect("smtp.gmail.com", 587, true);
-                smtpClient.Authenticate("user", "password");
-                smtpClient.Send(mailMessage);
-                smtpClient.Disconnect(true);
+                using (var smtpClient = new SmtpClient())
+                {
+                    smtpClient.Connect("smtp.gmail.com", 465, true);
+                    smtpClient.Authenticate(mailDetails.FromAddress, mailDetails.Password);
+                    smtpClient.Send(mailMessage, new MailboxAddress(mailDetails.FromName, mailDetails.FromAddress),
+                        mailDetails.Recipients.Select(x => new MailboxAddress(x, x)));
+                    smtpClient.Disconnect(true);
+                    return true;
+                }
             }
-
-            return true;
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
         }
     }
 }
