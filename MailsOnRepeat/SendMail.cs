@@ -33,9 +33,11 @@ namespace MailsOnRepeat
                         smtpClient.Send(mailMessage, new MailboxAddress(mailDetails.FromName, mailDetails.FromAddress),
                             mailDetails.Recipients.Select(x => MailboxAddress.Parse(x)));
                         Console.WriteLine($"Mail {i + 1} sent");
+                        Thread.Sleep(30000);    // Wait for 30 seconds
                     }
                     
                     smtpClient.Disconnect(true);
+                    Console.WriteLine("Operation completed.");
                     return true;
                 }
             }

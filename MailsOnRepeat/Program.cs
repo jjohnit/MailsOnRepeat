@@ -4,7 +4,7 @@ namespace MailsOnRepeat
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             // Get credentials from the appSettings file
             var config = new ConfigurationBuilder()
@@ -35,7 +35,7 @@ namespace MailsOnRepeat
                     Body = config["Credentials:Body"]
                 };
 
-                bool status = SendMail.Send(mailDetails);
+                bool status = await Task.Run(() => SendMail.Send(mailDetails));
                 Console.WriteLine($"Mails sent : {status}\nDo you want to continue (y/n) : ");
                 if (Console.ReadLine()?.ToLower() == "n")
                     break;
