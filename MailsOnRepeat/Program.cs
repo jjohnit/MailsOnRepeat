@@ -15,7 +15,7 @@ namespace MailsOnRepeat
                 Console.WriteLine("Enter recipient mails : ");
                 var recipients = Console.ReadLine()?.Split(',').ToList();
                 recipients?.ForEach(x => x.Trim());
-                //var recipients = new List<String>() { "RepeatMailTest1@yopmail.com", "RepeatMailTest2@yopmail.com" };
+                //var recipients = new List<String>() { "jjohnit@gmail.com", "jjasan2@uic.edu" };
                 if (recipients is null || recipients.Count <= 0)
                 {
                     Console.WriteLine("Provide valid recipients");
@@ -35,8 +35,12 @@ namespace MailsOnRepeat
                     Body = config["Credentials:Body"]
                 };
 
-                bool status = await Task.Run(() => SendMail.Send(mailDetails));
-                Console.WriteLine($"Mails sent : {status}\nDo you want to continue (y/n) : ");
+                for (int i = 0; i < count; i++)
+                {
+                    bool status = await Task.Run(() => SendMail.Send(mailDetails));
+                    Thread.Sleep(30000);
+                }
+                //Console.WriteLine($"Mails sent : {status}\nDo you want to continue (y/n) : ");
                 if (Console.ReadLine()?.ToLower() == "n")
                     break;
             }
