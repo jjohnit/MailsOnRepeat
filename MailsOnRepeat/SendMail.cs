@@ -27,16 +27,10 @@ namespace MailsOnRepeat
                 {
                     smtpClient.Connect("smtp.gmail.com", 465, true);
                     smtpClient.Authenticate(mailDetails.FromAddress, mailDetails.Password);
-
-                    //for (int i = 0; i < mailDetails.MailCount; i++)
-                    //{
-                        // Modify subject to consider each mail as seperate
-                        mailMessage.Subject += '.';
-                        smtpClient.Send(mailMessage, new MailboxAddress(mailDetails.FromName, mailDetails.FromAddress),
-                            mailDetails.Recipients.Select(x => MailboxAddress.Parse(x)));
-                        Console.WriteLine($"Mail sent");
-                        //Thread.Sleep(30000);    // Wait for 30 seconds
-                    //}
+                    //mailMessage.Subject += '.';
+                    smtpClient.Send(mailMessage, new MailboxAddress(mailDetails.FromName, mailDetails.FromAddress),
+                        mailDetails.Recipients.Select(x => MailboxAddress.Parse(x)));
+                    Console.WriteLine($"Mail sent");
 
                     smtpClient.Disconnect(true);
                     //Console.WriteLine("Operation completed.");

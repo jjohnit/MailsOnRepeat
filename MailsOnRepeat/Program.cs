@@ -35,12 +35,14 @@ namespace MailsOnRepeat
                     Body = config["Credentials:Body"]
                 };
 
+                bool status = true;
                 for (int i = 0; i < count; i++)
                 {
-                    bool status = await Task.Run(() => SendMail.Send(mailDetails));
-                    Thread.Sleep(30000);
+                    status = await Task.Run(() => SendMail.Send(mailDetails));
+                    Thread.Sleep(60000); // Wait for 1 min
                 }
-                //Console.WriteLine($"Mails sent : {status}\nDo you want to continue (y/n) : ");
+
+                Console.WriteLine($"Mails sent : {status}\nDo you want to continue (y/n) : ");
                 if (Console.ReadLine()?.ToLower() == "n")
                     break;
             }
